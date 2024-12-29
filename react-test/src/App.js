@@ -1,7 +1,9 @@
 import "./App.css";
+import { useState } from "react";
 import { Fragment } from "react";
 import { ProductList } from "./components/ProductList/ProductList";
 import { ProductCard } from "./components/ProductCard/ProductCard";
+import { ProductFilter } from "./components/ProductFilter/ProductFilter";
 
 function App() {
   const products = [
@@ -24,7 +26,7 @@ function App() {
         "3x or 5x Telephoto camera",
         "Up to 29 hours video playback",
       ],
-      stockCount: 0,
+      stockCount: 3,
       price: 499,
     },
     {
@@ -40,8 +42,23 @@ function App() {
     },
   ];
 
+  const [filters, setFilters] = useState({
+    price: { min: 0, max: 999 },
+    description: "some description",
+  });
+
   function handlePurchase(product) {
     alert(`You clicked on ${product.title} which cost $${product.price}`);
+  }
+
+  function handleFilter(key, value) {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      price: {
+        ...prevFilters.price,
+        [key]: value,
+      }
+    }));
   }
 
   return (
@@ -57,13 +74,22 @@ function App() {
         ))}
       </ProductList>
 
-      <h2 style={{ textAlign: "center" }}>Products under $500</h2>
+      <h2 style={{ textAlign: "center" }}>Products filtered by price</h2>
+      <ProductFilter filters={filters} onFilter={handleFilter} />
       {products
-        .filter((product) => product.price < 500)
+        .filter(
+          (product) =>
+            product.price >= filters.price.min &&
+            product.price <= filters.price.max
+        )
         .map((product) => (
           <Fragment key={product.title}>
             <hr />
-            <ProductCard style={{width: "100px"}} key={product.title} product={product} />
+            <ProductCard
+              style={{ width: "100px" }}
+              key={product.title}
+              product={product}
+            />
           </Fragment>
         ))}
     </div>

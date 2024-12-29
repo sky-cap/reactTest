@@ -1,10 +1,11 @@
+import "./App.css";
+import { ProductCard } from "./components/ProductCard"; 
 
-import './App.css';
 
 function App() {
   return (
     <div className="App">
-     React Test
+      <ProductCard />
     </div>
   );
 }

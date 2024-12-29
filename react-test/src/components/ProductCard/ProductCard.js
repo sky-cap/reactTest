@@ -1,4 +1,6 @@
-import styles from './ProductCard.module.css';
+import { useState } from "react";
+import { Fragment } from "react";
+import styles from "./ProductCard.module.css";
 
 export function ProductCard({
   product,
@@ -6,16 +8,21 @@ export function ProductCard({
   onPurchase,
   width,
 }) {
-  let stockCount = product.stockCount;
+  const [stockCount, setStockCount] = useState(product.stockCount);
+  const [showMore, setShowMore] = useState(false);
 
   function handleClick() {
-    stockCount -= 1;
+    setStockCount((prevStockCount) => prevStockCount - 1);
     onPurchase(product);
   }
 
+  function handleTwoClicks() {
+    setStockCount((prevStockCount) => prevStockCount - 2);
+    onPurchase(product);
+  }
 
   return (
-    <article className={styles.Container} style={{ background, width}}>
+    <article className={styles.Container} style={{ background, width }}>
       <h2>{product.title}</h2>
       <img
         src={product.imageSrc}
@@ -24,17 +31,25 @@ export function ProductCard({
         height="128px"
       />
       <p>Specification:</p>
-      <ul className={styles.List}>
-        {product.specification.map((spec) => (
-          <li key={spec}>{spec}</li>
-        ))}
-      </ul>
+      <button onClick={() => setShowMore(!showMore)}>
+        {showMore ? "Show less" : "Show more"}
+      </button>
+      {showMore && (
+        <ul className={styles.List}>
+          {product.specification.map((spec) => (
+            <li key={spec}>{spec}</li>
+          ))}
+        </ul>
+      )}
       <Status stockCount={stockCount} />
       {stockCount > 0 && (
-        <button onClick={handleClick}>
-          Buy (From ${product.price})
-        </button>
+        <Fragment>
+          <p>Price: ${product.price}</p>
+          <button onClick={handleClick}>Buy</button>
+        </Fragment>
       )}
+      {stockCount > 1 && (<button onClick={handleTwoClicks}>Buy 2</button>)}
+      
     </article>
   );
 }

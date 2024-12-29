@@ -6,6 +6,14 @@ export function ProductCard({
   onPurchase,
   width,
 }) {
+  let stockCount = product.stockCount;
+
+  function handleClick() {
+    stockCount -= 1;
+    onPurchase(product);
+  }
+
+
   return (
     <article className={styles.Container} style={{ background, width}}>
       <h2>{product.title}</h2>
@@ -21,9 +29,9 @@ export function ProductCard({
           <li key={spec}>{spec}</li>
         ))}
       </ul>
-      <Status stockCount={product.stockCount} />
-      {product.stockCount > 0 && (
-        <button onClick={() => onPurchase(product)}>
+      <Status stockCount={stockCount} />
+      {stockCount > 0 && (
+        <button onClick={handleClick}>
           Buy (From ${product.price})
         </button>
       )}

@@ -1,22 +1,24 @@
-export function ProductCard() {
-  const product = {
-    imageSrc: "images/iphone.png",
-    title: "iPhone 15 Pro",
-    specification: [
-      "A17 Pro chip with 6-core GPU",
-      "3x or 5x Telephoto camera",
-      "Up to 29 hours video playback",
-    ],
-    price: 999,
-  };
-  
-
+export function ProductCard({
+  product,
+  background = "slategray",
+  onPurchase,
+  width,
+}) {
   return (
-    <article style={{ border: "1px solid white", padding: "1rem", borderRadius: "0.5rem", textAlign: "center" }}>
+    <article
+      style={{
+        background,
+        width: width,
+        border: "1px solid white",
+        padding: "1rem",
+        borderRadius: "0.5rem",
+        textAlign: "center",
+      }}
+    >
       <h2>{product.title}</h2>
       <img
         src={product.imageSrc}
-        alt={product.title} 
+        alt={product.title}
         width="128px"
         height="128px"
       />
@@ -26,7 +28,21 @@ export function ProductCard() {
           <li key={spec}>{spec}</li>
         ))}
       </ul>
-      <button>Buy (From ${product.price})</button>
+      <Status stockCount={product.stockCount} />
+      {product.stockCount > 0 && (<button onClick={() => onPurchase(product)}>
+        Buy (From ${product.price})
+      </button>)}
     </article>
+  );
+}
+
+function Status({ stockCount }) {
+    const notAvailableTemplate =  <p style={{ color: "lightsalmon" }}>Out of Stock</p>
+    const availableTemplate = <p style={{ color: "lightgreen" }}>{stockCount} available</p>
+
+  return stockCount > 0 ? (
+    availableTemplate
+  ) : (
+    notAvailableTemplate
   );
 }

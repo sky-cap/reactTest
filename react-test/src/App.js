@@ -1,7 +1,7 @@
 import "./App.css";
 import { Fragment } from "react";
-import { ProductList } from "./components/ProductList";
-import { ProductCard } from "./components/ProductCard";
+import { ProductList } from "./components/ProductList/ProductList";
+import { ProductCard } from "./components/ProductCard/ProductCard";
 
 function App() {
   const products = [

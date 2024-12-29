@@ -1,0 +1,19 @@
+.Container {
+  border: 1px solid white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.List {
+  list-style: none;
+  padding: 0;
+}
+
+.NotAvailableStatus {
+  color: lightsalmon;
+}
+
+.AvailableStatus {
+  color: lightgreen;
+}
